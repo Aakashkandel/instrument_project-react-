@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import UserNavbar from "../Navbar/UserNavbar";
-import '../user/Index.css';
+import './Index.css';
 import image1 from "../Assets/image1.png";
 import image2 from "../Assets/image2.png";
 import image3 from "../Assets/image3.png";
