@@ -1,6 +1,7 @@
 import { useFormik, setFieldValue } from 'formik';
 import React, { useState } from 'react';
 import { signUpSchema } from '../../../schemas';
+import axios from '../../api/api';
 
 
 const initialValues = {
@@ -24,21 +25,30 @@ export default function Register() {
     const [selectedProvince, setSelectedProvince] = useState('');
     const [districts, setDistricts] = useState([]);
 
-    const { values, errors, handleBlur,touched, handleChange, handleSubmit } = useFormik({
+
+    
+  
+    const { values, errors, handleBlur, touched, handleChange, handleSubmit } = useFormik({
         initialValues: initialValues,
         validationSchema: signUpSchema,
-        onSubmit: handleSubmitt,
-    });
-
-
-    const handleSubmitt = async (values) => {
-        try {
-            const response = await axios.post('/register', values);
-            console.log(response.data); // Handle response from server
-        } catch (error) {
-            console.error('Error submitting form:', error);
+        onSubmit: async (values) => {
+            try {
+                console.log("this is data", values);
+                const response = await axios.post('/registerapi', JSON.stringify(values), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log(response.data); // Handle response from server
+            } catch (error) {
+                console.error('Error submitting form:', error);
+            }
         }
-    };
+    });
+    
+
+
+
 
 
 
