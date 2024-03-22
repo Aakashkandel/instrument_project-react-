@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import {Link} from "react-router-dom";
+
 
 const UserNavbar = () => {
     const element = useRef(null);
@@ -27,7 +29,7 @@ const UserNavbar = () => {
                         class=" text-white py-2 my-2 flex hover:bg-white hover:text-black ">
                         <div> <ion-icon class="text-2xl px-4"
                             name="home-outline"></ion-icon></div>
-                        <div class="cursor-pointer w-full"> <a class="text-xl mx-3  font-bold" href>Home</a></div>
+                        <div class="cursor-pointer w-full"> <a class="text-xl mx-3  font-bold" Link="/">Home</a></div>
                     </li>
                     <li
                         class="flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex">
@@ -36,23 +38,23 @@ const UserNavbar = () => {
                                 name="person-outline"></ion-icon>
                         </div>
                         <div class="cursor-pointer w-full"  >
-                            <a class="text-xl mx-3 font-bold" href>Shop</a>
+                            <a class="text-xl mx-3 font-bold" Link="">Shop</a>
                         </div>
                     </li>
                     <li
                         class=" text-white hover:bg-white hover:text-black py-2 my-2 flex  ">
                         <div> <ion-icon class="text-2xl px-4" name="cube-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full"> <a class="text-xl mx-3 font-bold" href>  Product  </a></div>
+                        <div class=" cursor-pointer w-full"> <a class="text-xl mx-3 font-bold" Link="">  Product  </a></div>
                     </li>
                     <li
                         class=" text-white hover:bg-white hover:text-black py-2 my-2 flex">
                         <div><ion-icon class="text-2xl px-4" name="cart-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full"> <a class="text-xl mx-3 font-bold" href>Cart</a></div>
+                        <div class=" cursor-pointer w-full"> <a class="text-xl mx-3 font-bold" Link="">Cart</a></div>
                     </li>
                     <li
                         class=" text-white hover:bg-white hover:text-black py-2 my-2 flex">
                         <div> <ion-icon class="text-2xl px-4" name="chatbubble-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full"><a class="text-xl mx-3 font-bold" href>
+                        <div class=" cursor-pointer w-full"><a class="text-xl mx-3 font-bold" Link="">
                             Message</a></div>
                     </li>
 
@@ -61,7 +63,7 @@ const UserNavbar = () => {
                         <div> <ion-icon class="text-2xl px-4"
                             name="information-circle-outline"></ion-icon></div>
                         <div class=" cursor-pointer w-full"><a class="text-xl mx-3 font-bold overflow-hidden"
-                            href>Notification</a></div>
+                            Link="">Notification</a></div>
                     </li>
 
 
@@ -69,7 +71,7 @@ const UserNavbar = () => {
                         class=" flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex">
                         <div> <ion-icon class="text-2xl px-4" name="person-circle-outline"></ion-icon></div>
                         <div class=" cursor-pointer w-full"><a class="text-xl mx-3 font-bold overflow-hidden"
-                            href>Profile</a></div>
+                            Link="">Profile</a></div>
                     </li>
 
                     <li
@@ -77,7 +79,7 @@ const UserNavbar = () => {
                         <div> <ion-icon class="text-2xl px-4"
                             name="information-circle-outline"></ion-icon></div>
                         <div class=" cursor-pointer w-full"><a class="text-xl mx-3 font-bold overflow-hidden"
-                            href>Help</a></div>
+                            Link="">Help</a></div>
                     </li>
 
                     <li
@@ -86,7 +88,7 @@ const UserNavbar = () => {
                         <div> <ion-icon class="text-2xl px-4"
                             name="log-in-outline"></ion-icon></div>
                         <div class=" cursor-pointer w-full">
-                            <a class="text-xl mx-3 font-bold" href>Logout</a>
+                            <a class="text-xl mx-3 font-bold" Link="">Logout</a>
 
                         </div>
                     </li>

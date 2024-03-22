@@ -4,6 +4,7 @@ import './Index.css';
 import image1 from "../Assets/image1.png";
 import image2 from "../Assets/image2.png";
 import image3 from "../Assets/image3.png";
+import { Link } from 'react-router-dom';
 
 const Index = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -60,11 +61,11 @@ const Index = () => {
                                     name="call-outline"></ion-icon></a>
 
                         </div>
-                        <div class="flex space-x-5">
-                            <a href
-                                class="text-white text-lg bg-purple-800 btn-hover scale-110 px-2 rounded-lg">Register</a>
+                        <div class="flex space-x-5 ">
+                            <Link to="/register"
+                                class="text-white text-lg bg-purple-800 btn-hover scale-110 px-2 rounded-lg">Register</Link>
 
-                            <a href class="text-white text-lg bg-blue-800 btn-hover scale-110 px-2 rounded-lg">Login</a>
+                            <Link to="/login" class="text-white text-lg bg-blue-800 btn-hover scale-110 px-2 rounded-lg">Login</Link>
 
                         </div>
                     </div>
