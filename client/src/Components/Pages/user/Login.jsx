@@ -2,6 +2,15 @@ import React from 'react';
 import { useState } from 'react';
 import { useFormik } from "formik";
 import axios from "../../api/api";
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import {userLogin,userLogout} from "../../state/action/SessionData"
+import { Link, useNavigate} from 'react-router-dom';
+
+
+
+
+
 
 const initialValues = {
     email: "",
@@ -9,7 +18,22 @@ const initialValues = {
 }
 
 export default function Login() {
- const[formmessage,setFormmessage]=useState('');
+    const dispatchh=useDispatch();
+    const navigate=useNavigate();
+   
+    const dataredux=useSelector(state=>state.authenticate)
+
+    if(dataredux.isLoggedin==true)
+    {
+       navigate('/indexloggedin');
+    }
+
+   
+
+
+    const [formmessage,setformmessage]=useState('');
+
+
 
     const { values, handleChange, handleSubmit, errors } = useFormik({
         initialValues: initialValues,
@@ -17,14 +41,28 @@ export default function Login() {
             try {
                 const response = await axios.post('/loginapi', values);
                 console.log(response.data); 
-                setFormmessage(response.data.message);  
+
+
+                localStorage.setItem("islog",true);
+
+                dispatchh(userLogin(response.data.sessiondata.email,response.data.sessiondata._id,response.data.sessiondata.name));
+                setformmessage(response.data.message);
+
+              
+                console.log(dataredux,"this is form");
+               
+                
+            
+                
                   
                        
             } catch (error) {
                 if(error.response)
                 {
                     console.log(error.response.data.message);
-                setFormmessage(error.response.data.message);    
+                    setformmessage(error.response.data.message);
+
+                 
 
                 }
                 
@@ -71,11 +109,11 @@ export default function Login() {
                                             <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
                                         </div>
                                     </div>
-                                    <a href="#" className="text-sm font-medium text-gray-300 hover:underline hover:dark:text-blue-500">Forgot password?</a>
+                                    <Link to="/forgotpassword" className="text-sm font-medium text-gray-300 hover:underline hover:dark:text-blue-500">Forgot password?</Link>
                                 </div>
                                 <button type="submit" name="submit" className="w-full text-white bg-blue-600 hover:bg-blue-500 rounded p-1 ">Sign in</button>
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                    Don’t have an account yet? <a href="#" className="text-sm font-medium text-gray-300 hover:underline hover:dark:text-blue-500">Sign up</a>
+                                    Don’t have an account yet? <Link to="/register" className="text-sm font-medium text-gray-300 hover:underline hover:dark:text-blue-500">Sign up</Link>
                                 </p>
                             </form>
                         </div>

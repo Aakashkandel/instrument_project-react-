@@ -3,8 +3,8 @@ import React, { useState,useEffect } from 'react';
 import { signUpSchema } from '../../../schemas';
 import axios from '../../api/api';
 
-import {userLogin,userLogout} from "../../state/action/SessionData";
-import { useSelector, useDispatch } from 'react-redux'; // Fix typo in import statement
+// import {userLogin,userLogout} from "../../state/action/SessionData";
+// import { useSelector, useDispatch } from 'react-redux'; // Fix typo in import statement
 
 
 const initialValues = {
@@ -25,19 +25,19 @@ const initialValues = {
 
 export default function Register() {
 
-    const dispatch=useDispatch();
-    const dispatchdata=useSelector(state=>state.authenticate);
+    // const dispatch=useDispatch();
+    // const dispatchdata=useSelector(state=>state.authenticate);
 
-    useEffect(() => { 
-        console.log("this is info", dispatchdata);
-    }, [dispatchdata]); 
+    // useEffect(() => { 
+    //     console.log("this is info", dispatchdata);
+    // }, [dispatchdata]); 
 
    
-    const dispatchHandler=()=>{
-        dispatch(userLogin("aakashdispatch677@gmail.com","fdsafdsahr51432hf432243245","mahdispatchho"));
+    // const dispatchHandler=()=>{
+    //     dispatch(userLogin("aakashdispatch677@gmail.com","fdsafdsahr51432hf432243245","mahdispatchho"));
        
         
-    }
+    // }
 
    
     const [districts, setDistricts] = useState([]);
@@ -322,7 +322,6 @@ export default function Register() {
                                 Register
                             </button>
 
-                            <button onClick={dispatchHandler}>dispatch check</button>
                         </div>
                     </form>
                 </div>

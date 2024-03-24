@@ -39,12 +39,8 @@ const Index = () => {
 
     return (
         <div className="flex w-auto">
-            <div>
-                <UserNavbar />
-
-            </div>
-
-            <div class="w-screen ml-12">
+            
+            <div class="w-screen ">
 
                 <div class="bg-blue-50 h-screen">
                     <div class="flex justify-between text-center mx-20 items-center">

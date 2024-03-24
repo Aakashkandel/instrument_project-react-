@@ -1,8 +1,12 @@
 import React, { useRef } from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import { userLogout } from '../state/action/SessionData';
+import { useDispatch } from 'react-redux';
 
 
 const UserNavbar = () => {
+    const dispatchh=useDispatch();
+    const navigate=useNavigate();
     const element = useRef(null);
 
     const smoothTransition = (element, width, duration) => {
@@ -13,6 +17,17 @@ const UserNavbar = () => {
 
         }, duration);
     };
+
+    const logouthandler=()=>{
+        console.log("i click logout");
+
+        localStorage.removeItem("islog");
+
+        navigate('/');
+        
+        
+dispatchh(userLogout());
+    }
 
     return (
         <div
@@ -88,7 +103,7 @@ const UserNavbar = () => {
                         <div> <ion-icon class="text-2xl px-4"
                             name="log-in-outline"></ion-icon></div>
                         <div class=" cursor-pointer w-full">
-                            <a class="text-xl mx-3 font-bold" Link="">Logout</a>
+                            <button class="text-xl mx-3 font-bold" onClick={logouthandler} >Logout</button>
 
                         </div>
                     </li>

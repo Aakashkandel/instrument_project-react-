@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/usermodels');
 const bcrypt = require('bcrypt');
-const session=require('express-session');;
+const session = require('express-session');
+const otpGenerator = require('otp-generator');
+const cron = require('node-cron');
+
+const nodemailer=require('nodemailer');
 
 const register = async (req, res) => {
     try {
@@ -67,14 +71,14 @@ const login = async (req, res) => {
                 return res.status(401).json({ message: "Incorrect password" });
             } else {
                 // Set session data
-                req.session.sessionData = {
+                req.sessionData = {
                     _id: userData._id,
                     email: userData.email,
-                    name:userData.name,
-                    
+                    name: userData.name,
+
                 };
                 console.log("User found successfully");
-                return res.status(200).json({ message: "Login successful" ,sessiondata:req.session.sessionData});
+                return res.status(200).json({ message: "Login successful", sessiondata: req.sessionData });
             }
         }
     } catch (error) {
@@ -83,4 +87,54 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { register, login };
+
+
+//forgot password
+
+const forgotpassword = async (req, res) => {
+    const { email } = req.body; // Changed res.body to req.body to correctly access the request body
+
+    const forgotemail = await User.findOne({ email });
+    const name=forgotemail.name; // Assuming User is your Mongoose model
+    if (!forgotemail) {
+        return res.status(401).json({ message: "Email not registered yet" });
+    }
+
+    const otp = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
+
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'aakashkandel9777@gmail.com', 
+            pass: 'tcgu mvxp ovqv iagl' 
+        }
+    });
+
+    const mailOptions = {
+        from: 'aakashkandel9777@gmail.com',
+        to: email,
+        subject: 'Password Reset OTP',
+        html: `
+        <p>Dear ${name},</p>
+        <p>We've received a request to reset the password for your account. As part of our security measures, we've generated a one-time password (OTP) for you:</p>
+        <h2>${otp}</h2>
+        <p>Please note that this OTP is valid for one minute only.</p>
+        <p>If you did not initiate this request, we advise you to ignore this message. Rest assured, your account security is our top priority.</p>
+        <p>For your safety, please do not reply to this email.</p>
+        `
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).json({ message: 'Failed to send OTP email' });
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.status(200).json({ message: 'OTP email sent successfully' ,code:otp});
+        }
+    });
+};
+
+
+
+module.exports = { register, login, forgotpassword };
