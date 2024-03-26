@@ -93,6 +93,7 @@ const login = async (req, res) => {
 
 const forgotpassword = async (req, res) => {
     const { email } = req.body; // Changed res.body to req.body to correctly access the request body
+    console.log(email+"this is email");
 
     const forgotemail = await User.findOne({ email });
     const name=forgotemail.name; // Assuming User is your Mongoose model

@@ -18,6 +18,7 @@ export default function Forgotpassword() {
     onSubmit: async (values) => {
       try {
         setIsLoading(true); // Show loader when submitting the form
+        console.log("this is data", values);
         const response = await axios.post('/forgotpasswordapi', values);
         console.log("Response data:", response.data);
         sessionStorage.setItem("otp", response.data.code);
