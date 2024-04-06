@@ -1,54 +1,118 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/usermodels');
+const Vendor = require('../models/vendormodels');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const otpGenerator = require('otp-generator');
 const cron = require('node-cron');
 
-const nodemailer=require('nodemailer');
+const nodemailer = require('nodemailer');
 
 const register = async (req, res) => {
-    try {
-        console.log(req.body);
+    
+    const { name, phone, email, password, confirm_password, date, gender } = req.body;
+    const { state, district, city_area } = req.body;
 
-        const { name, phone, email, password, confirm_password, date, gender } = req.body;
-        const { state, district, city_area } = req.body;
+    const existingUser = await User.findOne({email});  
+    const vendoruser=await Vendor.findOne({email});
 
+    if (req.body.usertype == "user") {
+        try {
+         
+            if (vendoruser) {
+                return res.status(401).json({ message: "Already used as vendor" })
 
-
-        if (password !== confirm_password) {
-            return res.status(400).json({ message: "Passwords do not match" });
-        }
-        const hashPassword = await bcrypt.hash(password, 10);
-
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists with this email" });
-        }
-
-        const newUser = new User({
-            name,
-            phone,
-            email,
-            password: hashPassword,
-            date,
-            gender,
-            address: {
-                state,
-                district,
-                city_area
             }
-        });
+            
+            console.log(req.body);
 
-        await newUser.save();
 
-        return res.status(200).json({ message: "Successfully registered" });
 
-    } catch (error) {
-        console.error("Error during registration:", error);
-        return res.status(400).json({ message: "Invalid registration. Please check your input." });
+
+            if (password !== confirm_password) {
+                return res.status(400).json({ message: "Passwords do not match" });
+            }
+            const hashPassword = await bcrypt.hash(password, 10);
+
+
+            if (existingUser) {
+                return res.status(400).json({ message: "User already exists with this email" });
+            }
+
+            const newUser = new User({
+                name,
+                phone,
+                email,
+                password: hashPassword,
+                date,
+                gender,
+                address: {
+                    state,
+                    district,
+                    city_area
+                }
+            });
+
+            await newUser.save();
+
+            return res.status(200).json({ message: "Successfully registered" });
+
+        } catch (error) {
+            console.error("Error during registration:", error);
+            return res.status(400).json({ message: "Invalid registration. Please check your input." });
+        }
     }
+
+    else {
+
+        try {
+            const {  panno } = req.body;
+           
+    
+            if (existingUser) {
+                return res.status(401).json({ message: "Already used as user" })
+
+            }
+            console.log(req.body);
+
+            
+          
+
+
+            if (password !== confirm_password) {
+                return res.status(400).json({ message: "Passwords do not match" });
+            }
+            const hashPassword = await bcrypt.hash(password, 10);
+
+          
+            if (vendoruser) {
+                return res.status(400).json({ message: "User already exists with this email" });
+            }
+
+            const newUser = new Vendor({
+                name,
+                phone,
+                email,
+                password: hashPassword,
+                panno,
+                address: {
+                    state,
+                    district,
+                    city_area
+                }
+            });
+
+            await newUser.save();
+
+            return res.status(200).json({ message: "Successfully registered" });
+
+        } catch (error) {
+            console.error("Error during registration:", error);
+            return res.status(400).json({ message: "Invalid registration. Please check your input." });
+        }
+    }
+
 };
 
 
@@ -60,26 +124,45 @@ const login = async (req, res) => {
 
     try {
         const userData = await User.findOne({ email });
+        const vendorData = await Vendor.findOne({ email }); // Assuming vendors also have unique emails
 
-        if (!userData) {
-            console.log("User with email " + email + " is not found");
-            return res.status(401).json({ message: "User not found" });
-        } else {
+        if (userData) {
             const passwordMatch = await bcrypt.compare(password, userData.password);
             if (!passwordMatch) {
                 console.log("Password does not match");
                 return res.status(401).json({ message: "Incorrect password" });
             } else {
+                const usertype = "user";
                 // Set session data
                 req.sessionData = {
                     _id: userData._id,
                     email: userData.email,
                     name: userData.name,
-
+                    type: usertype,
                 };
                 console.log("User found successfully");
                 return res.status(200).json({ message: "Login successful", sessiondata: req.sessionData });
             }
+        } else if (vendorData) {
+            const passwordMatch = await bcrypt.compare(password, vendorData.password);
+            if (!passwordMatch) {
+                console.log("Password does not match");
+                return res.status(401).json({ message: "Incorrect password" });
+            } else {
+                const usertype = "vendor";
+                // Set session data
+                req.sessionData = {
+                    _id: vendorData._id,
+                    email: vendorData.email,
+                    name: vendorData.name,
+                    type: usertype,
+                };
+                console.log("Vendor found successfully");
+                return res.status(200).json({ message: "Login successful", sessiondata: req.sessionData });
+            }
+        } else {
+            console.log("User with email " + email + " is not found");
+            return res.status(401).json({ message: "User not found" });
         }
     } catch (error) {
         console.error('Error during login:', error);
@@ -93,10 +176,10 @@ const login = async (req, res) => {
 
 const forgotpassword = async (req, res) => {
     const { email } = req.body; // Changed res.body to req.body to correctly access the request body
-    console.log(email+"this is email");
+    console.log(email + "this is email");
 
     const forgotemail = await User.findOne({ email });
-    const name=forgotemail.name; // Assuming User is your Mongoose model
+    const name = forgotemail.name; // Assuming User is your Mongoose model
     if (!forgotemail) {
         return res.status(401).json({ message: "Email not registered yet" });
     }
@@ -106,8 +189,8 @@ const forgotpassword = async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user: 'aakashkandel9777@gmail.com', 
-            pass: 'tcgu mvxp ovqv iagl' 
+            user: 'aakashkandel9777@gmail.com',
+            pass: 'tcgu mvxp ovqv iagl'
         }
     });
 
@@ -131,11 +214,47 @@ const forgotpassword = async (req, res) => {
             res.status(500).json({ message: 'Failed to send OTP email' });
         } else {
             console.log('Email sent: ' + info.response);
-            res.status(200).json({ message: 'OTP email sent successfully' ,code:otp});
+            res.status(200).json({ message: 'OTP email sent successfully', code: otp });
         }
     });
 };
 
 
 
-module.exports = { register, login, forgotpassword };
+
+
+
+const changepassword = async (req, res) => {
+
+    console.log(req.body);
+    const { password, confirm_password, email } = req.body;
+    if (password != confirm_password) {
+        return res.status(401).json({ message: "Password must be same" });
+    }
+    else {
+        try {
+            const passHash = await bcrypt.hash(password, 10);
+
+            const updatedUser = await User.findOneAndUpdate(
+                { email: email },
+                { password: passHash },
+                { new: true }
+            );
+
+            if (!updatedUser) {
+                return res.status(401).json({ message: "User not found" });
+            }
+
+            return res.status(200).json({ message: "Password changed successfully" });
+        } catch (error) {
+            console.error("Error updating password:", error);
+            return res.status(500).json({ message: "Internal server error", error: error.message });
+        }
+
+    }
+
+}
+
+
+
+module.exports = { register, login, forgotpassword, changepassword };

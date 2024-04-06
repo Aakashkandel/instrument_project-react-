@@ -19,14 +19,17 @@ const UserNavbar = () => {
     };
 
     const logouthandler=()=>{
-        console.log("i click logout");
+        sessionStorage.removeItem('reduxState');
+        for (let i = 0; i < sessionStorage.length; i++) {
+            const key = sessionStorage.key(i);
+            sessionStorage.removeItem(key);
+          }
+        dispatchh(userLogout());
+        navigate('/')
 
-        localStorage.removeItem("islog");
-
-        navigate('/');
         
         
-dispatchh(userLogout());
+
     }
 
     return (

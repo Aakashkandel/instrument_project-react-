@@ -4,6 +4,7 @@ const initialState = {
       email: null,
       uid: null,
       name: null,
+      usertype:null,
     }
   };
   
@@ -38,6 +39,7 @@ const initialState = {
             email: action.payload.email,
             uid: action.payload.uid,
             name: action.payload.name,
+            usertype:action.payload.usertype,
           }
         };
         saveState(newState);
@@ -50,6 +52,7 @@ const initialState = {
             email: null,
             uid: null,
             name: null,
+            usertype:null,
           }
         };
         saveState(logoutState);

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import UserNavbar from "../Navbar/UserNavbar";
-import './Index.css';
+import '../Assets/css/Index.css';
 import image1 from "../Assets/image1.png";
 import image2 from "../Assets/image2.png";
 import image3 from "../Assets/image3.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -56,6 +59,7 @@ const IndexLoggedin = () => {
 
     return (
         <div className="flex w-auto">
+            <ToastContainer/>
             <div>
                 <UserNavbar />
 

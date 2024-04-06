@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
-import axios from "../../api/api";
-import "../../Assets/css/Loader.css";
+import axios from "./api/api";
+import "../Assets/css/Loader.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const initialValues = {
   email: "",
 }
 
+
+
+
 export default function Forgotpassword() {
+
+  useEffect(()=>{
+    const logSessionData = () => {
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        const value = sessionStorage.getItem(key);
+        console.log(`${key}: ${value}`);
+      }
+    };
+    logSessionData();
+  
+    
+  })
+
   const [isLoading, setIsLoading] = useState(false); // State to manage loader visibility
 
   const navigate = useNavigate();
@@ -17,17 +37,22 @@ export default function Forgotpassword() {
     initialValues: initialValues,
     onSubmit: async (values) => {
       try {
-        setIsLoading(true); // Show loader when submitting the form
+        setIsLoading(true); 
         console.log("this is data", values);
         const response = await axios.post('/forgotpasswordapi', values);
         console.log("Response data:", response.data);
         sessionStorage.setItem("otp", response.data.code);
         sessionStorage.setItem("otpemail", values.email);
-        console.log("OTP:", sessionStorage.getItem("otp"));
-        console.log("otpemail:", sessionStorage.getItem("otpemail"));
+    
         
         if (response.data) {
+         
+          setTimeout(()=>{toast.success("Email has been send to your email")},50);
+          
+
           navigate('/confirmotp');
+         
+
         }
       } catch (error) {
         console.error("An error occurred:", error);
@@ -36,9 +61,11 @@ export default function Forgotpassword() {
       }
     }
   });
+ 
 
   return (
     <div>
+      <ToastContainer/>
       <main id="content" role="main" className="w-full  max-w-md mx-auto p-6">
         <div className="mt-7 bg-white  rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-indigo-300">
           <div className="p-4 sm:p-7">
@@ -65,7 +92,7 @@ export default function Forgotpassword() {
                   {isLoading ? (
                     <div class="w-full py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-white text-white  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"><div className="loader"></div> </div>// Display loader if isLoading is true
                   ) : (
-                    <button type="submit" name="submit" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Reset password</button>
+                    <button type="submit"  name="submit" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Reset password</button>
                   )}
                 </div>
               </form>

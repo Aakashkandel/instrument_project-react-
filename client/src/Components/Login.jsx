@@ -1,11 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
 import { useFormik } from "formik";
-import axios from "../../api/api";
+import axios from "./api/api";
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import {userLogin,userLogout} from "../../state/action/SessionData"
+import {userLogin,userLogout} from  "./state/action/SessionData";
 import { Link, useNavigate} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -18,15 +20,17 @@ const initialValues = {
 }
 
 export default function Login() {
+    const notify=()=>{
+        toast.success("Successfully Login!");
+   
+   
+       }
     const dispatchh=useDispatch();
     const navigate=useNavigate();
    
     const dataredux=useSelector(state=>state.authenticate)
 
-    if(dataredux.isLoggedin==true)
-    {
-       navigate('/indexloggedin');
-    }
+
 
    
 
@@ -41,15 +45,34 @@ export default function Login() {
             try {
                 const response = await axios.post('/loginapi', values);
                 console.log(response.data); 
+                const usertype=response.data.sessiondata.type;
+                console.log(usertype+"this is type");
+
 
 
                 localStorage.setItem("islog",true);
+               
 
-                dispatchh(userLogin(response.data.sessiondata.email,response.data.sessiondata._id,response.data.sessiondata.name));
+                dispatchh(userLogin(response.data.sessiondata.email,response.data.sessiondata._id,response.data.sessiondata.name,usertype));
                 setformmessage(response.data.message);
+                setTimeout(() => {
+                    toast.success("Successfully Login!");
+                    
+                },50 );
+
+                const id=response.data.sessiondata._id;
+                if (usertype === "user") {
+                    navigate(`/users/${id}`); 
+                    
+                  }
+
+                 else if (usertype === "vendor") {
+                    navigate(`/vendors/${id}`); 
+                  }
+              
 
               
-                console.log(dataredux,"this is form");
+                
                
                 
             

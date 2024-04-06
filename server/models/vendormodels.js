@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const vendorSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -18,13 +18,14 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    date: {
-        type: String,
+    
+    panno: {
+        type: Number,
         required: true,
     },
-    gender: {
-        type: String,
-        required: true,
+    image:{
+        type:String,
+        required:false,
     },
     address: {
         state: {
@@ -44,6 +45,6 @@ const userSchema = new Schema({
 
 
 
-const users = mongoose.model('users', userSchema);
+const users = mongoose.model('vendors', vendorSchema);
 module.exports = users;
  

@@ -1,8 +1,8 @@
-export const userLogin = (email, uid, name) => {
+export const userLogin = (email, uid, name,usertype) => {
     return (dispatch) => {
         dispatch({
             type: 'login',
-            payload: { email, uid, name }
+            payload: { email, uid, name,usertype }
         });
     };
 };

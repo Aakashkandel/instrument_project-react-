@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
-import UserNavbar from "../Navbar/UserNavbar";
-import './Index.css';
-import image1 from "../Assets/image1.png";
-import image2 from "../Assets/image2.png";
-import image3 from "../Assets/image3.png";
+
+import "./Assets/css/Index.css";
+import image1 from "./Assets/image1.png";
+import image2 from "./Assets/image2.png";
+import image3 from "./Assets/image3.png";
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Index = () => {
+    sessionStorage.removeItem("otp");
+    sessionStorage.removeItem("otpemail")
+    for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        sessionStorage.removeItem(key);
+      }
     const [currentSlide, setCurrentSlide] = useState(0);
     const [slides, setSlides] = useState([]);
 
@@ -39,6 +48,7 @@ const Index = () => {
 
     return (
         <div className="flex w-auto">
+            <ToastContainer/>
             
             <div class="w-screen ">
 
