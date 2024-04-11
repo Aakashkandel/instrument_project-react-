@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import MainRegister from "../Register"
+import MainRegister from "../Global/Register"
 
 export default function Register() {
   const [userType, setUserType] = useState("");

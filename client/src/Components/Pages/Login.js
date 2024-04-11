@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginUser from '../Login'
+import LoginUser from '../Global/Login'
 import { useSelector } from 'react-redux';
 
 

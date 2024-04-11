@@ -1,8 +1,8 @@
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
-import { usersignUpSchema } from '../schemas/index';
-import { vendorsignUpSchema } from '../schemas/vendorregister';
-import axios from './api/api';
+import { usersignUpSchema } from '../../schemas/index';
+import { vendorsignUpSchema } from '../../schemas/vendorregister';
+import axios from '../api/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';

@@ -65,8 +65,8 @@ const VendorNavbar = () => {
                         <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
-                            <div> <ion-icon class="text-2xl px-4"
-                                name="person-outline"></ion-icon>
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
                             </div>
                             <div class="cursor-pointer w-full"  >
                                 AddProduct
@@ -79,7 +79,7 @@ const VendorNavbar = () => {
 
 
                             <div> <ion-icon class="text-2xl px-4"
-                                name="person-outline"></ion-icon>
+                                name="cube-outline"></ion-icon>
                             </div>
                             <div class="cursor-pointer w-full"  >
                                 Product
@@ -92,7 +92,7 @@ const VendorNavbar = () => {
 
 
                             <div> <ion-icon class="text-2xl px-4"
-                                name="person-outline"></ion-icon>
+                                name="archive-outline"></ion-icon>
                             </div>
                             <div class="cursor-pointer w-full"  >
                                 Orders
@@ -106,7 +106,7 @@ const VendorNavbar = () => {
                             <div> <ion-icon class="text-2xl px-4"
                                 name="person-outline"></ion-icon>
                             </div>
-                            <div class="cursor-pointer w-full"  >
+                            <div class="cash-pointer w-full"  >
                                 Payments
                             </div>
 
@@ -119,7 +119,7 @@ const VendorNavbar = () => {
                             <div> <ion-icon class="text-2xl px-4"
                                 name="person-outline"></ion-icon>
                             </div>
-                            <div class="cursor-pointer w-full"  >
+                            <div class="chatbubbles-pointer w-full"  >
                                 Message
                             </div>
 
@@ -131,7 +131,7 @@ const VendorNavbar = () => {
 
 
                             <div> <ion-icon class="text-2xl px-4"
-                                name="person-outline"></ion-icon>
+                                name="notifications-outline"></ion-icon>
                             </div>
                             <div class="cursor-pointer w-full"  >
                                 Notification
@@ -142,7 +142,7 @@ const VendorNavbar = () => {
 
 
                     <li>
-                        <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${id}/profile`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"
@@ -160,7 +160,7 @@ const VendorNavbar = () => {
 
 
                             <div> <ion-icon class="text-2xl px-4"
-                                name="person-outline"></ion-icon>
+                                name="log-out-outline"></ion-icon>
                             </div>
                             <div class="cursor-pointer w-full"  >
                                 Logout

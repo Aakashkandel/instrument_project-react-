@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
-import schemaValidate from "../schemas/Confimpass";
-import axios from "./api/api";
+import schemaValidate from "../../schemas/Confimpass";
+import axios from "../api/api";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';

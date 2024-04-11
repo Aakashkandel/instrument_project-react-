@@ -7,6 +7,7 @@ import Login from './Components/Pages/Login';
 import Vendor from './Components/vendor/Index';
 import User from './Components/user/IndexLoggedin';
 import AddProduct from "./Components/vendor/AddProduct"
+import VendorProfile from"./Components/Pages/Profile";
 import PageRouter from './Components/PageRouter';
 // import IndexLoggedin from './Components/user/IndexLoggedin';
 // import Forgotpassword from './Components/user/Forgotpassword';
@@ -26,6 +27,7 @@ function App() {
           <Route path='/vendors/:id' element={<PageRouter/>}>
             <Route index element={<Vendor/>}/>
             <Route path='addproduct' element={<AddProduct />} />
+            <Route path='profile' element={<VendorProfile />} />
          
           </Route>
           <Route path='/users/:id' element={<User />} />
