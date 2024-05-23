@@ -9,6 +9,11 @@ import User from './Components/user/IndexLoggedin';
 import AddProduct from "./Components/vendor/AddProduct"
 import VendorProfile from"./Components/Pages/Profile";
 import PageRouter from './Components/PageRouter';
+
+
+import VendorProtected from './ProtectedRouter/VendorRouter';
+import UserRouter from './ProtectedRouter/UserRouter';
+import PageNotFound from './Components/Global/PageNotFound';
 // import IndexLoggedin from './Components/user/IndexLoggedin';
 // import Forgotpassword from './Components/user/Forgotpassword';
 // import OtpEnter from './Components/user/OtpEnter';
@@ -24,13 +29,14 @@ function App() {
 
         <Routes>
           <Route path='/' element={<Index />} />
-          <Route path='/vendors/:id' element={<PageRouter/>}>
+          <Route path='/vendors/:id' element={<VendorProtected Component={PageRouter}/>}>
             <Route index element={<Vendor/>}/>
             <Route path='addproduct' element={<AddProduct />} />
             <Route path='profile' element={<VendorProfile />} />
          
           </Route>
-          <Route path='/users/:id' element={<User />} />
+          <Route path='/users/:id' element={<UserRouter Component={User} />} />
+          
 
 
           <Route path='register' element={<Register />} />
@@ -40,6 +46,7 @@ function App() {
           <Route path='forgotpassword' element={<Forgotpassword/>}/>
           <Route path='confirmotp' element={<OtpEnter/>}/>
           <Route path='changepassword' element={<Changepassword/>}/> */}
+          <Route path="*" element={<PageNotFound/>}/>
 
         </Routes>
       </div>

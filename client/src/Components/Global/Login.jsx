@@ -4,15 +4,10 @@ import { useFormik } from "formik";
 import axios from "../api/api";
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import {userLogin,userLogout} from  "../state/action/SessionData";
-import { Link, useNavigate} from 'react-router-dom';
+import { userLogin, userLogout } from "../state/action/SessionData";
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
-
-
-
 
 const initialValues = {
     email: "",
@@ -20,76 +15,65 @@ const initialValues = {
 }
 
 export default function Login() {
-    const notify=()=>{
+    const notify = () => {
         toast.success("Successfully Login!");
-   
-   
-       }
-    const dispatchh=useDispatch();
-    const navigate=useNavigate();
-   
-    const dataredux=useSelector(state=>state.authenticate)
+    }
+    const dispatchh = useDispatch();
+    const navigate = useNavigate();
 
-
-
-   
-
-
-    const [formmessage,setformmessage]=useState('');
-
-
+    const [formmessage, setformmessage] = useState('');
 
     const { values, handleChange, handleSubmit, errors } = useFormik({
         initialValues: initialValues,
         onSubmit: async (values) => {
             try {
                 const response = await axios.post('/loginapi', values);
-                console.log(response.data); 
-                const usertype=response.data.sessiondata.type;
-                console.log(usertype+"this is type");
+                // console.log(response.data);
+
+                let usertype = response.data.usertype;
+                let token = response.data.token;
+
+                //set token in localstorage
+                localStorage.setItem("token", token)
 
 
 
-                localStorage.setItem("islog",true);
-               
+                // Navigate based on user type
 
-                dispatchh(userLogin(response.data.sessiondata.email,response.data.sessiondata._id,response.data.sessiondata.name,usertype));
-                setformmessage(response.data.message);
-                setTimeout(() => {
+                if (usertype == "vendor") {
+
+                    let email = response.data.vendorData.email;
+                    let id = response.data.vendorData._id;
+                    let name = response.data.vendorData.name;
+                    dispatchh(userLogin(email, id, name, usertype));
                     toast.success("Successfully Login!");
-                    
-                },50 );
 
-                const id=response.data.sessiondata._id;
-                if (usertype === "user") {
-                    navigate(`/users/${id}`); 
-                    
-                  }
-
-                 else if (usertype === "vendor") {
-                    navigate(`/vendors/${id}`); 
-                  }
-              
-
-              
-                
-               
-                
-            
-                
-                  
-                       
-            } catch (error) {
-                if(error.response)
-                {
-                    console.log(error.response.data.message);
-                    setformmessage(error.response.data.message);
-
-                 
-
+                    navigate(`/vendors/${id}`);
+                    console.log("this is vendor");
                 }
-                
-                
+                else if (usertype === "user") {
+
+                    let email = response.data.userData.email;
+                    let id = response.data.userData._id;
+                    let name = response.data.userData.name;
+                    dispatchh(userLogin(email, id, name, usertype));
+                    toast.success("Successfully Login!");
+
+
+                    navigate(`/users/${id}`);
+                    console.log("this is user");
+                }
+
+                else {
+                    console.log("this is else");
+                }
+
+
+            } catch (error) {
+                if (error.response) {
+
+                    setformmessage(error.response.data.message);
+                }
             }
         }
     });
@@ -114,19 +98,19 @@ export default function Login() {
                             <form className="space-y-4 md:space-y-6" onSubmit={formSubmitHandle}>
                                 <div>
                                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                                    <input type="email" value={values.email} onChange={handleChange} name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
-                                    
+                                    <input type="email" value={values.email} onChange={handleChange} name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="" />
+
                                 </div>
                                 <div>
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                    <input type="password" value={values.password} onChange={handleChange} name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                                    <input type="password" value={values.password} onChange={handleChange} name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
                                 </div>
                                 <p className="text-red-600 ">{formmessage}</p>
 
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-start">
                                         <div className="flex items-center h-5">
-                                            <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required=""/>
+                                            <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
                                         </div>
                                         <div className="ml-3 text-sm">
                                             <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>

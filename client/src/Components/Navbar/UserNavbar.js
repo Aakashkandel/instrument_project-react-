@@ -24,6 +24,11 @@ const UserNavbar = () => {
             const key = sessionStorage.key(i);
             sessionStorage.removeItem(key);
           }
+
+          for (let i = 0; i < localStorage.length; i++) {
+            const keyy = localStorage.key(i);
+            localStorage.removeItem(keyy);
+          }
         dispatchh(userLogout());
         navigate('/')
 

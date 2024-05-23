@@ -20,13 +20,7 @@ const IndexLoggedin = () => {
     
 
     const reduxdata=useSelector(state=>state.authenticate);
-   const flag=reduxdata.isLoggedin;
-   console.log(flag);
-
-   if (flag==false)
-   {
-        navigate('/login');
-   }
+  
 
     
 

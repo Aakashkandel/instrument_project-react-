@@ -1,30 +1,31 @@
-const express = require('express');
-const router = express.Router();
+
 const User = require('../models/usermodels');
 const Vendor = require('../models/vendormodels');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const otpGenerator = require('otp-generator');
 const cron = require('node-cron');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 const nodemailer = require('nodemailer');
 
 const register = async (req, res) => {
-    
+
     const { name, phone, email, password, confirm_password, date, gender } = req.body;
     const { state, district, city_area } = req.body;
 
-    const existingUser = await User.findOne({email});  
-    const vendoruser=await Vendor.findOne({email});
+    const existingUser = await User.findOne({ email });
+    const vendoruser = await Vendor.findOne({ email });
 
     if (req.body.usertype == "user") {
         try {
-         
+
             if (vendoruser) {
                 return res.status(401).json({ message: "Already used as vendor" })
 
             }
-            
+
             console.log(req.body);
 
 
@@ -67,17 +68,17 @@ const register = async (req, res) => {
     else {
 
         try {
-            const {  panno } = req.body;
-           
-    
+            const { panno } = req.body;
+
+
             if (existingUser) {
                 return res.status(401).json({ message: "Already used as user" })
 
             }
             console.log(req.body);
 
-            
-          
+
+
 
 
             if (password !== confirm_password) {
@@ -85,7 +86,7 @@ const register = async (req, res) => {
             }
             const hashPassword = await bcrypt.hash(password, 10);
 
-          
+
             if (vendoruser) {
                 return res.status(400).json({ message: "User already exists with this email" });
             }
@@ -133,32 +134,63 @@ const login = async (req, res) => {
                 return res.status(401).json({ message: "Incorrect password" });
             } else {
                 const usertype = "user";
-                // Set session data
-                req.sessionData = {
-                    _id: userData._id,
-                    email: userData.email,
-                    name: userData.name,
-                    type: usertype,
-                };
+
+
                 console.log("User found successfully");
-                return res.status(200).json({ message: "Login successful", sessiondata: req.sessionData });
+                const token = jwt.sign({ id: userData._id, email, usertype }, 'shhhh',
+                    {
+                        expiresIn: "2h"
+                    }
+                );
+
+                userData.token = token;
+                userData.password = undefined;
+
+                //set the value in cookies
+
+                const options = {
+                    expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+                    httpOnly: true,
+
+                };
+
+
+                return res.status(200).cookie("token", token, options).json({ success: true, message: "successfully login", token, userData, usertype });
+
             }
         } else if (vendorData) {
             const passwordMatch = await bcrypt.compare(password, vendorData.password);
             if (!passwordMatch) {
                 console.log("Password does not match");
                 return res.status(401).json({ message: "Incorrect password" });
-            } else {
+            } 
+            else
+             {
                 const usertype = "vendor";
-                // Set session data
-                req.sessionData = {
-                    _id: vendorData._id,
-                    email: vendorData.email,
-                    name: vendorData.name,
-                    type: usertype,
+
+
+                console.log("User found successfully");
+                const token = jwt.sign({ id: vendorData._id, email, usertype }, 'shhhh',
+                    {
+                        expiresIn: "2h"
+                    }
+                );
+
+                vendorData.token = token;
+                vendorData.password = undefined;
+
+                //set the value in cookies
+
+                const option = {
+                    expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+                    httpOnly: true,
+
                 };
-                console.log("Vendor found successfully");
-                return res.status(200).json({ message: "Login successful", sessiondata: req.sessionData });
+                
+
+
+                return res.status(200).cookie("token", token, option).json({ success: true, message: "successfully login", token, vendorData, usertype });
+
             }
         } else {
             console.log("User with email " + email + " is not found");
@@ -175,11 +207,11 @@ const login = async (req, res) => {
 //forgot password
 
 const forgotpassword = async (req, res) => {
-    const { email } = req.body; // Changed res.body to req.body to correctly access the request body
+    const { email } = req.body;
     console.log(email + "this is email");
 
     const forgotemail = await User.findOne({ email });
-    const name = forgotemail.name; // Assuming User is your Mongoose model
+    const name = forgotemail.name;
     if (!forgotemail) {
         return res.status(401).json({ message: "Email not registered yet" });
     }
