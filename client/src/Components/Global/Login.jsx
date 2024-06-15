@@ -28,19 +28,20 @@ export default function Login() {
         onSubmit: async (values) => {
             try {
                 const response = await axios.post('/loginapi', values);
-                // console.log(response.data);
+              console.log(response);
 
                 let usertype = response.data.usertype;
                 let token = response.data.token;
 
-                //set token in localstorage
-                localStorage.setItem("token", token)
+              
+                
 
 
 
-                // Navigate based on user type
+           
 
                 if (usertype == "vendor") {
+                    localStorage.setItem("token", token)
 
                     let email = response.data.vendorData.email;
                     let id = response.data.vendorData._id;
@@ -48,10 +49,11 @@ export default function Login() {
                     dispatchh(userLogin(email, id, name, usertype));
                     toast.success("Successfully Login!");
 
-                    navigate(`/vendors/${id}`);
+                    navigate(`/vendors/${name}`);
                     console.log("this is vendor");
                 }
                 else if (usertype === "user") {
+                    localStorage.setItem("token", token)
 
                     let email = response.data.userData.email;
                     let id = response.data.userData._id;
@@ -59,8 +61,11 @@ export default function Login() {
                     dispatchh(userLogin(email, id, name, usertype));
                     toast.success("Successfully Login!");
 
+                    const slug=name.replace(" ","-");
+                    console.log(slug);
 
-                    navigate(`/users/${id}`);
+
+                    navigate(`/users/${slug}`);
                     console.log("this is user");
                 }
 

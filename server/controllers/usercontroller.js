@@ -42,6 +42,7 @@ const register = async (req, res) => {
             }
 
             const newUser = new User({
+                
                 name,
                 phone,
                 email,

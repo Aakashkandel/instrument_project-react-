@@ -6,9 +6,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 export default function UserRouter(props) {
     const navigate = useNavigate();
     const { Component } = props;
-    let { id } = useParams();
+    let { name } = useParams();
     const stateData = useSelector(state => state.authenticate);
-    const stateid = stateData.userInfo.uid;
+    const stateid = stateData.userInfo.name;
     const isLoggedin = stateData.isLoggedin;
 
     const token=localStorage.getItem('token');
@@ -16,8 +16,8 @@ export default function UserRouter(props) {
    
 
     useEffect(() => {
-        if (stateid !== id ) {
-            navigate('/pagenotfound404');
+        if (stateid !== name ) {
+          
         }
         if(isLoggedin == false && !token)
             {

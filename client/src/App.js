@@ -14,6 +14,9 @@ import PageRouter from './Components/PageRouter';
 import VendorProtected from './ProtectedRouter/VendorRouter';
 import UserRouter from './ProtectedRouter/UserRouter';
 import PageNotFound from './Components/Global/PageNotFound';
+import AddCart from './Components/user/AddCart';
+import pageRouterUser from './Components/pageRouterUser';
+import CheckOut from './Components/user/CheckOut';
 // import IndexLoggedin from './Components/user/IndexLoggedin';
 // import Forgotpassword from './Components/user/Forgotpassword';
 // import OtpEnter from './Components/user/OtpEnter';
@@ -29,13 +32,21 @@ function App() {
 
         <Routes>
           <Route path='/' element={<Index />} />
-          <Route path='/vendors/:id' element={<VendorProtected Component={PageRouter}/>}>
+          <Route path='/vendors/:name' element={<VendorProtected Component={PageRouter}/>}>
             <Route index element={<Vendor/>}/>
-            <Route path='addproduct' element={<AddProduct />} />
+            <Route path='addproduct'  element={<VendorProtected Component={AddProduct}/>} />
             <Route path='profile' element={<VendorProfile />} />
          
           </Route>
-          <Route path='/users/:id' element={<UserRouter Component={User} />} />
+          <Route path='/users/:name' element={<UserRouter Component={pageRouterUser} />} >
+
+            <Route index element={<User/>}/>
+            <Route path='addtocart' element={<UserRouter Component={AddCart}/>}/>
+        
+            <Route path='checkout' element={<UserRouter Component={CheckOut}/>}/>
+           
+
+          </Route>
           
 
 
@@ -46,7 +57,7 @@ function App() {
           <Route path='forgotpassword' element={<Forgotpassword/>}/>
           <Route path='confirmotp' element={<OtpEnter/>}/>
           <Route path='changepassword' element={<Changepassword/>}/> */}
-          <Route path="*" element={<PageNotFound/>}/>
+          {/* <Route path="*" element={<PageNotFound/>}/> */}
 
         </Routes>
       </div>

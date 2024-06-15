@@ -18,22 +18,27 @@ const VendorNavbar = () => {
         }, duration);
     };
 
-    const logouthandler = () => {
+    const logouthandler=()=>{
         sessionStorage.removeItem('reduxState');
         for (let i = 0; i < sessionStorage.length; i++) {
             const key = sessionStorage.key(i);
             sessionStorage.removeItem(key);
-        }
+          }
+
+          for (let i = 0; i < localStorage.length; i++) {
+            const keyy = localStorage.key(i);
+            localStorage.removeItem(keyy);
+          }
         dispatchh(userLogout());
         navigate('/')
 
-
-
+        
+        
 
     }
 
     const sessiondata = useSelector(state => state.authenticate);
-    const id = sessiondata.userInfo.uid;
+    const id = sessiondata.userInfo.name;
 
 
     return (
@@ -156,7 +161,7 @@ const VendorNavbar = () => {
                     </li>
 
                     <li>
-                        <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <button onClick={logouthandler} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"
@@ -166,7 +171,7 @@ const VendorNavbar = () => {
                                 Logout
                             </div>
 
-                        </Link>
+                        </button>
                     </li>
 
                     

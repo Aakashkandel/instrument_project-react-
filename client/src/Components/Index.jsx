@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import "./Assets/css/Index.css";
 import image1 from "./Assets/image1.png";
 import image2 from "./Assets/image2.png";
@@ -7,17 +6,27 @@ import image3 from "./Assets/image3.png";
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import axios from './api/api';
 
 const Index = () => {
-    sessionStorage.removeItem("otp");
-    sessionStorage.removeItem("otpemail")
-    for (let i = 0; i < sessionStorage.length; i++) {
-        const key = sessionStorage.key(i);
-        sessionStorage.removeItem(key);
-      }
+
     const [currentSlide, setCurrentSlide] = useState(0);
     const [slides, setSlides] = useState([]);
+    const [products, setProducts] = useState([]);
+
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get("allproductapi");
+            setProducts(response.data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
+   
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
 
     useEffect(() => {
         setSlides(document.querySelectorAll('.slide'));
@@ -26,30 +35,33 @@ const Index = () => {
     useEffect(() => {
         const slideInterval = setInterval(nextSlide, 3000);
 
-
-
         slides.forEach((slide, index) => {
             if (index === currentSlide) {
                 slide.style.opacity = 1;
             } else {
                 slide.style.opacity = 0;
             }
+        });
 
         return () => clearInterval(slideInterval);
-
-        });
-    }, [currentSlide,slides]);
+    }, [currentSlide, slides]);
 
     const nextSlide = () => {
         setCurrentSlide((currentSlide + 1) % slides.length);
     };
 
-  
+
+    useEffect(() => {
+        console.log(products);
+
+    }, [products]);
+
+
 
     return (
         <div className="flex w-auto">
-            <ToastContainer/>
-            
+            <ToastContainer />
+
             <div class="w-screen ">
 
                 <div class="bg-blue-50 h-screen">
@@ -124,25 +136,25 @@ const Index = () => {
                                     </svg>
                                     Free Delivery
                                 </h3>
-                                <p class="text-gray-600 mt-2">Get free delivery on all orders above $50. We ensure timely and secure delivery of your instruments.</p>
+                                <h1 class="text-gray-600  mt-2">Get free delivery on all orders above $50. We ensure timely and secure delivery of your instruments.</h1>
                             </div>
 
 
-                            <div class="border rounded-lg p-6 bg-white shadow-md bg-yellow-200">
+                            <div class="border rounded-lg p-6  shadow-md bg-yellow-200">
                                 <h3 class="text-lg font-semibold text-gray-800">Genuine Products</h3>
-                                <p class="text-gray-600 mt-2">We guarantee authentic and high-quality instruments sourced directly from trusted manufacturers.</p>
+                                <h1 class="text-gray-600 mt-2">We guarantee authentic and high-quality instruments sourced directly from trusted manufacturers.</h1>
                             </div>
 
 
                             <div class="border rounded-lg p-6 shadow-md bg-purple-200">
                                 <h3 class="text-lg font-semibold text-gray-800">Huge Saving</h3>
-                                <p class="text-gray-600 mt-2">Enjoy exclusive discounts and offers on a wide range of instruments. Save big on your purchases!</p>
+                                <h1 class="text-gray-600 mt-2">Enjoy exclusive discounts and offers on a wide range of instruments. Save big on your purchases!</h1>
                             </div>
 
 
                             <div class="border rounded-lg p-6 shadow-md bg-blue-200">
                                 <h3 class="text-lg font-semibold text-gray-800">Easy Return</h3>
-                                <p class="text-gray-600 mt-2">Not satisfied with your purchase? No worries! We offer hassle-free returns and refunds within 30 days.</p>
+                                <h1 class="text-gray-600 font-normal mt-2">Not satisfied with your purchase? No worries! We offer hassle-free returns and refunds within 30 days.</h1>
                             </div>
 
                         </div>
@@ -156,64 +168,23 @@ const Index = () => {
 
 
 
-                <div class="container mx-auto px-4 py-8">
+                <div class="container mx-auto mt-10 px-4 py-8">
 
                     <div class="feature_product grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-
-
-                        <div class="border rounded-lg p-6 bg-white shadow-md">
-                            <img src="image/image1.png" alt="Guitar" class="w-full h-48 object-cover mb-4" />
-                            <h3 class="text-lg font-semibold text-gray-800">Guitar</h3>
-                            <p class="text-gray-600 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <div class="flex items-center mt-4">
-                                <span class="text-gray-700 font-semibold">$200</span>
-                                <button class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Add to Cart
-                                </button>
+                        {products.map((product, index) => (
+                            <div key={index} class="border rounded-lg p-6 bg-white shadow-md">
+                               <div class="w-full h-40 p-3 m-auto ">  <img src={`http://localhost:5000/${product.image}`} alt={product.product_name} class="w-5/12 h-40 m-auto object-cover mb-4" /> </div>
+                                <h3 class="text-lg font-semibold text-gray-800 ">{product.product_name}</h3>
+                                <h1 class="text-gray-600 mt-2  ">{product.title}</h1>
+                                <div class="flex items-center mt-4">
+                                    <span class="text-gray-700 font-semibold">Rs {product.price.regular_price}</span>
+                                    <button class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Add to Cart
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-
-
-                        <div class="border rounded-lg p-6 bg-white shadow-md">
-                            <img src="image/image2.png" alt="Flute" class="w-full h-48 object-cover mb-4" />
-                            <h3 class="text-lg font-semibold text-gray-800">Flute</h3>
-                            <p class="text-gray-600 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <div class="flex items-center mt-4">
-                                <span class="text-gray-700 font-semibold">$150</span>
-                                <button class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-
-
-                        <div class="border rounded-lg p-6 bg-white shadow-md">
-                            <img src="image/image3.png" alt="Piano" class="w-full h-48 object-cover mb-4" />
-                            <h3 class="text-lg font-semibold text-gray-800">Piano</h3>
-                            <p class="text-gray-600 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <div class="flex items-center mt-4">
-                                <span class="text-gray-700 font-semibold">$500</span>
-                                <button class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-
-
-                        <div class="border rounded-lg p-6 bg-white shadow-md">
-                            <img src="image/image4.png" alt="Drum" class="w-full h-48 object-cover mb-4" />
-                            <h3 class="text-lg font-semibold text-gray-800">Drum</h3>
-                            <p class="text-gray-600 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <div class="flex items-center mt-4">
-                                <span class="text-gray-700 font-semibold">$300</span>
-                                <button class="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-
+                        ))}
                     </div>
-
                 </div>
 
 
@@ -225,7 +196,7 @@ const Index = () => {
                         <div class="flex justify-around  items-center mb-8">
                             <div class="flex items-center">
                                 <img src="company_logo.png" alt="Company Logo" class="h-12 mr-4" />
-                                <p class="text-lg">Instrument Nepal - Your Destination for Quality Instruments</p>
+                                <h1 class="text-lg">Instrument Nepal - Your Destination for Quality Instruments</h1>
                             </div>
 
 

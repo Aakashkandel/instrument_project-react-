@@ -8,9 +8,10 @@ const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
 
 
+
 const app = express();
 const PORT = 5000; 
-
+app.use('/uploads',express.static('uploads'))
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

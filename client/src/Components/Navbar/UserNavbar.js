@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userLogout } from '../state/action/SessionData';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 
 const UserNavbar = () => {
-    const dispatchh=useDispatch();
-    const navigate=useNavigate();
+    const dispatchh = useDispatch();
+    const navigate = useNavigate();
     const element = useRef(null);
 
     const smoothTransition = (element, width, duration) => {
@@ -18,24 +17,31 @@ const UserNavbar = () => {
         }, duration);
     };
 
-    const logouthandler=()=>{
+    const logouthandler = () => {
         sessionStorage.removeItem('reduxState');
         for (let i = 0; i < sessionStorage.length; i++) {
             const key = sessionStorage.key(i);
             sessionStorage.removeItem(key);
-          }
+        }
 
-          for (let i = 0; i < localStorage.length; i++) {
+        for (let i = 0; i < localStorage.length; i++) {
             const keyy = localStorage.key(i);
             localStorage.removeItem(keyy);
-          }
+        }
         dispatchh(userLogout());
         navigate('/')
-
-        
-        
-
     }
+
+    const sessiondata = useSelector(state => state.authenticate);
+    let slug = ""; // Initialize slug variable outside the conditional
+    const name = sessiondata.userInfo.name;
+ 
+    if (name != null) {
+        
+        slug = name.replace(" ", "-");
+    }
+
+
 
     return (
         <div
@@ -48,31 +54,57 @@ const UserNavbar = () => {
         >
             <div>
                 <ul class="list-none">
-                    <li
-                        class=" text-white py-2 my-2 flex hover:bg-white hover:text-black ">
-                        <div> <ion-icon class="text-2xl px-4"
-                            name="home-outline"></ion-icon></div>
-                        <div class="cursor-pointer w-full"> <a class="text-xl mx-3  font-bold" Link="/">Home</a></div>
+                <li>
+                        <Link to={`/users/${slug}`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+
+
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer w-full"  >
+                                Home
+                            </div>
+
+                        </Link>
                     </li>
-                    <li
-                        class="flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex">
-                        <div>
-                            <ion-icon class="text-2xl px-4"
-                                name="person-outline"></ion-icon>
-                        </div>
-                        <div class="cursor-pointer w-full"  >
-                            <a class="text-xl mx-3 font-bold" Link="">Shop</a>
-                        </div>
+                    <li>
+                        <Link to="" class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+
+
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer w-full"  >
+                                shop
+                            </div>
+
+                        </Link>
                     </li>
-                    <li
-                        class=" text-white hover:bg-white hover:text-black py-2 my-2 flex  ">
-                        <div> <ion-icon class="text-2xl px-4" name="cube-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full"> <a class="text-xl mx-3 font-bold" Link="">  Product  </a></div>
+                    <li>
+                        <Link to="" class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+
+
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer w-full"  >
+                                Product
+                            </div>
+
+                        </Link>
                     </li>
-                    <li
-                        class=" text-white hover:bg-white hover:text-black py-2 my-2 flex">
-                        <div><ion-icon class="text-2xl px-4" name="cart-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full"> <a class="text-xl mx-3 font-bold" Link="">Cart</a></div>
+                    <li>
+                        <Link to={`/users/${slug}/addtocart`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+
+
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer w-full"  >
+                                Cart
+                            </div>
+
+                        </Link>
                     </li>
                     <li
                         class=" text-white hover:bg-white hover:text-black py-2 my-2 flex">
@@ -81,39 +113,64 @@ const UserNavbar = () => {
                             Message</a></div>
                     </li>
 
-                    <li
-                        class=" flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex">
-                        <div> <ion-icon class="text-2xl px-4"
-                            name="information-circle-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full"><a class="text-xl mx-3 font-bold overflow-hidden"
-                            Link="">Notification</a></div>
+                    <li>
+                        <Link to="" class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+
+
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer w-full"  >
+                               Notification
+                            </div>
+
+                        </Link>
                     </li>
 
 
-                    <li
-                        class=" flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex">
-                        <div> <ion-icon class="text-2xl px-4" name="person-circle-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full"><a class="text-xl mx-3 font-bold overflow-hidden"
-                            Link="">Profile</a></div>
+                    <li>
+                        <Link to="" class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+
+
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer w-full"  >
+                              Profile
+                            </div>
+
+                        </Link>
                     </li>
 
-                    <li
-                        class=" flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex">
-                        <div> <ion-icon class="text-2xl px-4"
-                            name="information-circle-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full"><a class="text-xl mx-3 font-bold overflow-hidden"
-                            Link="">Help</a></div>
+                    <li>
+                        <Link to="" class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+
+
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer w-full"  >
+                               Help
+                            </div>
+
+                        </Link>
                     </li>
 
-                    <li
-                        class="  text-white hover:bg-white hover:text-black py-2 my-2 flex">
+                 
 
-                        <div> <ion-icon class="text-2xl px-4"
-                            name="log-in-outline"></ion-icon></div>
-                        <div class=" cursor-pointer w-full">
+
+                    <li>
+                        <Link to="" class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+
+
+                            <div>
+                            <ion-icon class="text-2xl px-4" name="add-circle-outline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer w-full"  >
                             <button class="text-xl mx-3 font-bold" onClick={logouthandler} >Logout</button>
+                            </div>
 
-                        </div>
+                        </Link>
                     </li>
                 </ul>
 

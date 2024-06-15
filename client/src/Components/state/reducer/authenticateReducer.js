@@ -25,7 +25,7 @@ const initialState = {
       const serializedState = JSON.stringify(state);
       sessionStorage.setItem('reduxState', serializedState);
     } catch {
-      // ignore write errors
+      
     }
   };
   
@@ -58,7 +58,7 @@ const initialState = {
         saveState(logoutState);
         return logoutState;
       default:
-        // Return the current state without any modifications
+        
         return state;
     }
   };
