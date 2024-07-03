@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import VendorNavbar from '../Navbar/VendorNavbar'
 import Vendorheaders from './Vendorheaders'
-import esewa from "../Assets/esewa.png"
+import esewaimg from "../Assets/esewa.png"
 import axios from '../api/api';
 import "../Assets/css/Inputfield.css"
 
 import { useFormik, Formik } from 'formik';
 import ProductSchema from '../../schemas/ProductSchema'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddProduct() {
     const [btnhidden, setBtnhidden] = useState(false);
     const [error, seterror] = useState(null);
     const [Filess, setFile] = useState(null);
+    const [esewa, setEsewa] = useState(null);
+    const { navigate } = useNavigate();
 
     
     
@@ -97,7 +101,58 @@ export default function AddProduct() {
     };
 
 
+//check esewa id is set or not
+    
+    const sessionData = useSelector(state => state.authenticate);
+    const userType = sessionData.userInfo.usertype;
+    const email = sessionData.userInfo.email;
+    const getProfile = async () => {
+        try {
+            const response = await axios.post('/profileapi', { email: email, usertype: userType }, {
+                headers: {
+                    'x-access-token': localStorage.getItem('token')
+                }
+            });
+            console.log(response);
+            const{vendor}=response.data;
+            if(vendor.esewaid==null){
+                setEsewa(null);
+            }else
+            {
+                setEsewa(vendor.esewaid);
+            }
+           
 
+
+
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+        }
+    };
+    useEffect(() => {
+
+
+        getProfile();
+
+    }, [userType, email, esewa]);
+
+    if(esewa==null){
+        return (
+            <div class="flex flex-col items-center dark:bg-gray-800 justify-center h-screen">
+            <h1 class="text-3xl font-bold text-gray-100 mb-4">Please Add Esewa ID</h1>
+            <div class="border w-full h-40 flex items-center justify-center">
+              <a href="#_" class="relative px-5 py-2 font-medium text-white group">
+                <span class="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform translate-x-0 -skew-x-12 bg-purple-500 group-hover:bg-purple-700 group-hover:skew-x-12"></span>
+                <span class="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform skew-x-12 bg-purple-700 group-hover:bg-purple-500 group-hover:-skew-x-12"></span>
+                <span class="absolute bottom-0 left-0 hidden w-10 h-40 transition-all duration-100 ease-out transform -translate-x-8 translate-y-10 bg-purple-600 -rotate-12"></span>
+                <span class="absolute bottom-0 right-0 hidden w-10 h-40 transition-all duration-100 ease-out transform translate-x-10 translate-y-8 bg-purple-400 -rotate-12"></span>
+                <span class="relative">Go to Profile</span>
+              </a>
+            </div>
+        </div>
+        
+        )
+    }
 
 
     return (
@@ -227,19 +282,19 @@ export default function AddProduct() {
                                          
                                         </div>
 
-                                        {/*<div>
+                                        <div>
                                              <label className="text-white dark:text-gray-200" htmlFor="esewaid">Esewa Id for Receive payment  <span className='text-red-400 text-xl '>*</span></label>
                                         <div className='flex  items-center'>
                                             <div className='w-1/12  mx-2'>
-                                                <img src={esewa} alt="" />
+                                                <img src={esewaimg} alt="" />
                                             </div>
                                             <div>
-                                            <input id="salesprice" type="Number" name="esewaid" placeholder='ex.9800000000' className=" appearance-none block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" />
+                                            <input id="salesprice" type="Number" name="esewaid" value={esewa} readOnly className=" appearance-none block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" />
 
                                             </div>
                                         </div> 
 
-                                        </div>*/}
+                                        </div>
                                         <div>
                                             <label className="block text-sm font-medium text-white">
                                                 Image  <span className='text-red-400 text-xl '>*</span>

@@ -29,5 +29,5 @@ const cartSchema=Schema({
  
 });
 
-const cart=mongoose.model('carts',cartSchema);;
-module.exports=cart;
+const Cart=mongoose.model('carts',cartSchema);;
+module.exports= Cart;

@@ -6,6 +6,7 @@ import axios from '../api/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 // import {userLogin,userLogout} from "../../state/action/SessionData";
@@ -201,6 +202,12 @@ export default function Register(props) {
                 break;
         }
     };
+
+
+
+   
+
+
     return (
         <div class="">
             <ToastContainer/>

@@ -290,4 +290,6 @@ const changepassword = async (req, res) => {
 
 
 
-module.exports = { register, login, forgotpassword, changepassword };
+
+
+module.exports = { register, login, forgotpassword, changepassword,};

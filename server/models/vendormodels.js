@@ -18,7 +18,11 @@ const vendorSchema = new Schema({
         type: String,
         required: true,
     },
-    
+    esewaid:{
+        type:Number,
+        required:false,
+    }
+    ,
     panno: {
         type: Number,
         required: true,

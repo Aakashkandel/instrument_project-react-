@@ -38,7 +38,14 @@ const VendorNavbar = () => {
     }
 
     const sessiondata = useSelector(state => state.authenticate);
-    const id = sessiondata.userInfo.name;
+    let slug = ""; 
+    const name = sessiondata.userInfo.name;
+ 
+    if (name != null) {
+        
+        slug = name.replace(" ", "-");
+    }
+
 
 
     return (
@@ -54,7 +61,7 @@ const VendorNavbar = () => {
                     onClick={() => smoothTransition(element.current, '50px', 50)}
                     ref={element}>
                     <li>
-                        <Link to={`/vendors/${id}`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${slug}`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"
@@ -67,7 +74,7 @@ const VendorNavbar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${slug}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div>
@@ -80,7 +87,7 @@ const VendorNavbar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${slug}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"
@@ -93,7 +100,7 @@ const VendorNavbar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${slug}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"
@@ -105,7 +112,7 @@ const VendorNavbar = () => {
 
                         </Link>
                     </li> <li>
-                        <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${slug}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"
@@ -118,7 +125,7 @@ const VendorNavbar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${slug}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"
@@ -132,7 +139,7 @@ const VendorNavbar = () => {
                     </li>
 
                     <li>
-                        <Link to={`/vendors/${id}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${slug}/addproduct`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"
@@ -147,7 +154,7 @@ const VendorNavbar = () => {
 
 
                     <li>
-                        <Link to={`/vendors/${id}/profile`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
+                        <Link to={`/vendors/${slug}/profile`} class="text-xl  font-bold flex-1 text-white hover:bg-white hover:text-black py-2 my-2 flex" >
 
 
                             <div> <ion-icon class="text-2xl px-4"

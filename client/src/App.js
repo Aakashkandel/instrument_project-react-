@@ -17,6 +17,12 @@ import PageNotFound from './Components/Global/PageNotFound';
 import AddCart from './Components/user/AddCart';
 import pageRouterUser from './Components/pageRouterUser';
 import CheckOut from './Components/user/CheckOut';
+import BankAdd from './Components/admin/BankAdd';
+import Esewacheckout from './Components/user/Esewacheckout';
+import Userorder from './Components/user/Userorder';
+
+
+
 // import IndexLoggedin from './Components/user/IndexLoggedin';
 // import Forgotpassword from './Components/user/Forgotpassword';
 // import OtpEnter from './Components/user/OtpEnter';
@@ -44,10 +50,13 @@ function App() {
             <Route path='addtocart' element={<UserRouter Component={AddCart}/>}/>
         
             <Route path='checkout' element={<UserRouter Component={CheckOut}/>}/>
+            <Route path='esewacheckout' element={<UserRouter Component={Esewacheckout}/>}/>
+            <Route path='order' element={<UserRouter Component={Userorder}/>}/>
+           
            
 
           </Route>
-          
+          <Route path="/addbank" element={<BankAdd/>} />
 
 
           <Route path='register' element={<Register />} />

@@ -16,9 +16,9 @@ export default function UserRouter(props) {
    
 
     useEffect(() => {
-        if (stateid !== id ) {
-            navigate('/pagenotfound404');
-        }
+        // if (stateid !== id ) {
+        //     navigate('/pagenotfound404');
+        // }
         if(isLoggedin == false && !token)
             {
                 navigate('/login');

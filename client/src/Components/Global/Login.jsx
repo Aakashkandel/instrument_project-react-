@@ -48,8 +48,12 @@ export default function Login() {
                     let name = response.data.vendorData.name;
                     dispatchh(userLogin(email, id, name, usertype));
                     toast.success("Successfully Login!");
+                    
+                    const slug=name.replace(" ","-");
+                    console.log(slug);
 
-                    navigate(`/vendors/${name}`);
+
+                    navigate(`/vendors/${slug}`);
                     console.log("this is vendor");
                 }
                 else if (usertype === "user") {

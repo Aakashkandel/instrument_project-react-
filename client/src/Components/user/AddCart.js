@@ -10,19 +10,36 @@ import { ToastContainer, toast } from 'react-toastify';
 export default function AddCart() {
   const [count, setCount] = useState(null);
   const [price, setprice] = useState([null]);
+  const [quantity, setquantity] = useState(1);
   const dispatch = useDispatch();
 
-
+  //get cart items from store
+const { success, cartItems,message } = useSelector(state => state.cart);
+console.log(cartItems);
+  
+//dispatch cart fetch function to the store before page load
   useEffect(() => {
 
     dispatch(productFetch());
   }, [dispatch]);
 
 
-  const { success, cartItems,message } = useSelector(state => state.cart);
-console.log(cartItems);
+  //if there is any change in message then show toast message
+
+useEffect(() => {
+  if (message) {
+    toast.success(message);
+    dispatch(productFetch());
+  }
+}
+, [message]);
 
 
+
+
+
+
+//calculate total and know how many items are in cart
 useEffect(() => {
   if (success === "completed") {
     let total = 0;
@@ -37,11 +54,14 @@ useEffect(() => {
 }, [success, cartItems]);
 
 
+//delete cart item
 
 const findcartid = (id) => {
   const cart_id=cartItems.cart.find(cart => cart.product_id === id);
   dispatch(deleteCart(cart_id._id)); 
 }
+
+//get user name
     
 const sessiondata = useSelector(state => state.authenticate);
 let slug = ""; 
@@ -52,13 +72,32 @@ if (name != null) {
     slug = name.replace(" ", "-");
 }
 
-useEffect(() => {
-  if (message) {
-    toast.success(message);
-    dispatch(productFetch());
+  const addquantity= async(id)=> {
+    console.log(id);
+    setquantity(quantity + 1);
+    const productid=cartItems.product.find(product=>product._id===id);
+    console.log(productid);
+    console.log(quantity);
+    const response = await axios.post('/increasequantity', {
+      product_id: id,
+    
+      quantity: quantity,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('token'),
+      },
+    });
+    setquantity(response.data.quantity);
+    console.log(response.data);
+    
+
   }
-}
-, [message]);
+  const deletequantity = (id) => {
+    console.log(id);
+  }
+
+
 
 
   return (
@@ -96,8 +135,8 @@ useEffect(() => {
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                               </svg>
                             </button>
-                            <input type="text" id="counter-input" data-input-counter class="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" placeholder="" value="2" required />
-                            <button type="button" id="increment-button" data-input-counter-increment="counter-input" class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+                          <input type="text" id="counter-input" data-input-counter class="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" placeholder="" value={quantity} required />
+                            <button type="button" onClick={()=>addquantity(product._id)} id="increment-button" data-input-counter-increment="counter-input" class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                               <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
                               </svg>
